@@ -1,6 +1,7 @@
 package retana.roger;
 
 import java.util.Random;
+import javax.swing.JOptionPane;
 
 public class MASTERMIND extends javax.swing.JPanel {
 
@@ -148,7 +149,7 @@ public class MASTERMIND extends javax.swing.JPanel {
     }//GEN-LAST:event_intentoActionPerformed
 
     private void codigoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_codigoActionPerformed
-        
+
     }//GEN-LAST:event_codigoActionPerformed
 
     private void resultadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_resultadoActionPerformed
@@ -178,53 +179,68 @@ public class MASTERMIND extends javax.swing.JPanel {
     }//GEN-LAST:event_iniciarActionPerformed
 
     private void compararActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_compararActionPerformed
-        int aciertosParciales = 0;
-        int aciertosTotales = 0;
 
-        for (int i = 0; i < codIngresado.length; i++) {
-            codIngresado[i] = String.valueOf(codigo.getText().toUpperCase().charAt(i));
-        }
+        if (codigo.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Debe ingresar un código de 4 digitos primero");
+        } else {
 
-        for (int j = 0; j < codColores.length; j++) {
+            int aciertosParciales = 0;
+            int aciertosTotales = 0;
 
-            if (codIngresado[j].equals(codColores[j])) {
-                aciertosTotales++;
-            } else {
-                for (int k = 0; k < codColores.length; k++) {
-                    if (codIngresado[j].equals(codColores[k])) {
-                        aciertosParciales++;
-                        break;
+            try {
+
+                for (int i = 0; i < codIngresado.length; i++) {
+                    codIngresado[i] = String.valueOf(codigo.getText().toUpperCase().charAt(i));
+                }
+
+            } catch (StringIndexOutOfBoundsException error) {
+                JOptionPane.showMessageDialog(null, "El código debe tener 4 digitos");
+                
+            }
+
+            for (int j = 0; j < codColores.length; j++) {
+
+                if (codIngresado[j].equals(codColores[j])) {
+                    aciertosTotales++;
+                } else {
+                    for (int k = 0; k < codColores.length; k++) {
+                        if (codIngresado[j].equals(codColores[k])) {
+                            aciertosParciales++;
+                            break;
+                        }
                     }
                 }
             }
+
+            resultado.setText("Aciertos totales " + aciertosTotales + " " + "Aciertos parciales "
+                    + aciertosParciales);
+
+            if (aciertosTotales == 4) {
+                gano.setEnabled(true);
+                codigo.setEditable(false);
+                codigo.setText("");
+                resultado.setText("");
+                comparar.setEnabled(false);
+                iniciar.setEnabled(true);
+                for (int m = 0; m < codColores.length; m++) {
+                    codColores[m] = "";
+                }
+            } else if (intentos == 0) {
+                perdio.setEnabled(true);
+                codigo.setEditable(false);
+                codigo.setText("");
+                resultado.setText("");
+                comparar.setEnabled(false);
+                iniciar.setEnabled(true);
+                for (int m = 0; m < codColores.length; m++) {
+                    codColores[m] = "";
+                }
+            }
+
+            intento.setText(String.valueOf(intentos--));
+
         }
 
-        resultado.setText("Aciertos totales " + aciertosTotales + " " + "Aciertos parciales "
-                + aciertosParciales);
-
-        if (aciertosTotales == 4) {
-            gano.setEnabled(true);
-            codigo.setEditable(false);
-            codigo.setText("");
-            resultado.setText("");
-            comparar.setEnabled(false);
-            iniciar.setEnabled(true);
-            for (int m = 0; m < codColores.length; m++) {
-                codColores[m] = "";
-            }
-        } else if (intentos == 0) {
-            perdio.setEnabled(true);
-            codigo.setEditable(false);
-            codigo.setText("");
-            resultado.setText("");
-            comparar.setEnabled(false);
-            iniciar.setEnabled(true);
-            for (int m = 0; m < codColores.length; m++) {
-                codColores[m] = "";
-            }
-        }
-
-        intento.setText(String.valueOf(intentos--));
 
     }//GEN-LAST:event_compararActionPerformed
 
